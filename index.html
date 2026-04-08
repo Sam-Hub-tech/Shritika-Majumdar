@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>শ্রীতিকা অন্নপ্রাশন নিমন্ত্রণ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Noto Sans Bengali', Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(to bottom, #fff8f0, #ffe4c4);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .card {
+      margin: 30px auto;
+      padding: 20px;
+      max-width: 500px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.2);
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    h1 { color: #d4a017; margin-bottom: 10px; animation: fadeIn 2s ease-in; }
+    h2 { color: #b22222; margin-bottom: 20px; }
+    p { font-size: 18px; margin: 5px 0; }
+    .highlight { font-size: 24px; color: #8b0000; font-weight: bold; margin: 10px 0; }
+    button { padding: 10px 20px; background: #d4a017; border: none; color: white; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 15px; animation: fadeIn 3s ease-in; }
+    button:hover { background: #b8860b; }
+
+    #countdown { font-size: 20px; color: #b22222; margin: 15px 0; display: flex; justify-content: center; gap: 15px; font-weight: bold; }
+    #countdown div { background: #ffe4c4; padding: 10px 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); animation: flip 0.5s ease-in-out; }
+
+    @keyframes fadeIn { from {opacity: 0;} to {opacity:1;} }
+    @keyframes flip { 0% { transform: rotateX(90deg); opacity:0; } 100% { transform: rotateX(0deg); opacity:1; } }
+
+    .gallery { position: relative; max-width: 300px; margin: 20px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+    .gallery img { width: 100%; display: none; border-radius: 15px; animation: fadeIn 2s ease-in; }
+    .gallery img.active { display: block; }
+
+    a { color: #b22222; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+
+    /* Confetti canvas */
+    #confetti { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+  </style>
+</head>
+
+<body>
+
+<!-- Background music -->
+<audio autoplay loop>
+  <source src="https://getshared.com/d/5dJ0hhew" type="audio/mpeg">
+  আপনার ব্রাউজার অডিও প্লে করতে পারছে না।
+</audio>
+
+<div class="card">
+
+  <h1>🙏 সাদর নিমন্ত্রণ 🙏</h1>
+  <h2>অন্নপ্রাশন অনুষ্ঠান</h2>
+
+  <p class="highlight">শ্রীতিকা মজুমদার</p>
+
+  <p><b>বাবা ও মা:</b> সুপ্রিয়া অগস্থী ও সৌরভ মজুমদার</p>
+  <p><b>ঠাকুরদা:</b> অসিত বরণ মজুমদার <br><b>ঠাকুমা:</b> আভা মজুমদার</p>
+  <p><b>পিসেমশাই:</b> গৌতম রায়চৌধুরী <br><b>পিসি:</b> বৈশাখী রায়চৌধুরী</p>
+  <p><b>দাদু:</b> জয়দেব অগস্থী <br><b>দিদা:</b> শোভা অগস্থী</p>
+  <p><b>মামা:</b> শ্যাম সুন্দর অগস্থী</p>
+
+  <hr>
+
+  <!-- Photo gallery -->
+  <div class="gallery">
+    <img src="https://gemini.google.com/share/355c7687801b" class="active" alt="শ্রীতিকা">
+    <img src="https://www.example.com/baby-photo2.jpg" alt="শ্রীতিকা">
+    <img src="https://www.example.com/baby-photo3.jpg" alt="শ্রীতিকা">
+  </div>
+
+  <!-- Date & Time -->
+  <p><b>📅 তারিখ:</b> ১৮ মে ২০২৬ / ৩ জ্যৈষ্ঠ ১৪৩৩</p>
+  <p><b>⏰ সময়:</b> দুপুর ১২টা</p>
+
+  <!-- Countdown Timer -->
+  <div id="countdown"></div>
+
+  <!-- Venue -->
+  <p><b>📍 স্থান:</b> আসানসোল <br>
+  <a href="https://maps.app.goo.gl/gDGCHg5uwxGDX19f7" target="_blank">Google Maps এ দেখুন</a></p>
+
+  <p>আপনাদের উপস্থিতি আমাদের অনুষ্ঠানকে আনন্দময় করে তুলবে 💛</p>
+
+  <!-- RSVP Button -->
+  <button onclick="showConfetti()">উপস্থিতি নিশ্চিত করুন</button>
+  <br>
+  <a href="https://api.whatsapp.com/send?text=আমি%20উপস্থিত%20থাম%20শ্রীতিকার%20অন্নপ্রাশনে!">WhatsApp এ শেয়ার করুন</a>
+
+</div>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti"></canvas>
+
+<script>
+  // Countdown
+  var eventDate = new Date("May 18, 2026 12:00:00").getTime();
+  function updateCountdown() {
+    var now = new Date().getTime();
+    var distance = eventDate - now;
+    if(distance<0){
+      document.getElementById("countdown").innerHTML="আজ অনুষ্ঠান!";
+      clearInterval(countdownInterval);
+      return;
+    }
+    var days = Math.floor(distance / (1000*60*60*24));
+    var hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+    var minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+    var seconds = Math.floor((distance % (1000*60)) / 1000);
+    document.getElementById("countdown").innerHTML =
+      "<div>"+days+" দিন</div>"+
+      "<div>"+hours+" ঘণ্টা</div>"+
+      "<div>"+minutes+" মিনিট</div>"+
+      "<div>"+seconds+" সেকেন্ড</div>";
+  }
+  var countdownInterval = setInterval(updateCountdown,1000);
+  updateCountdown();
+
+  // Photo gallery slider
+  let galleryImages = document.querySelectorAll('.gallery img');
+  let currentIndex = 0;
+  setInterval(()=>{
+    galleryImages[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex+1)%galleryImages.length;
+    galleryImages[currentIndex].classList.add('active');
+  },3000);
+
+  // Confetti effect
+  const confettiCanvas=document.getElementById('confetti');
+  const confettiCtx=confettiCanvas.getContext('2d');
+  confettiCanvas.width=window.innerWidth;
+  confettiCanvas.height=window.innerHeight;
+  let confettiParticles=[];
+  function ConfettiParticle(){
+    this.x=Math.random()*confettiCanvas.width;
+    this.y=Math.random()*confettiCanvas.height-20;
+    this.r=Math.random()*6+4;
+    this.d=Math.random()*confettiCanvas.height;
+    this.color="hsl("+Math.random()*360+",100%,50%)";
+    this.tilt=Math.random()*10-10;
+    this.tiltAngleIncrement=Math.random()*0.07+0.05;
+    this.tiltAngle=0;
+    this.draw=function(){
+      confettiCtx.beginPath();
+      confettiCtx.lineWidth=this.r/2;
+      confettiCtx.strokeStyle=this.color;
+      confettiCtx.moveTo(this.x+this.tilt+this.r/4,this.y);
+      confettiCtx.lineTo(this.x+this.tilt,this.y+this.tilt+this.r/4);
+      confettiCtx.stroke();
+    }
+  }
+  function initConfetti(){
+    confettiParticles=[];
+    for(let i=0;i<150;i++) confettiParticles.push(new ConfettiParticle());
+  }
+  function drawConfetti(){
+    confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+    confettiParticles.forEach(p=>{p.tiltAngle+=p.tiltAngleIncrement;p.y+=Math.cos(p.d)+1;p.x+=Math.sin(p.tiltAngle);p.draw();});
+    requestAnimationFrame(drawConfetti);
+  }
+  function showConfetti(){ initConfetti(); drawConfetti(); setTimeout(()=>{confettiParticles=[]},5000); }
+</script>
+
+</body>
+</html>
